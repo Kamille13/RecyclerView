@@ -9,6 +9,9 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
@@ -42,8 +45,11 @@ public class ItineraryCreateActivity extends AppCompatActivity {
                 if (departure.isEmpty() || destination.isEmpty() || driver.isEmpty() || price.isEmpty()) {
                     Toast.makeText(ItineraryCreateActivity.this, R.string.fill_all_fields, Toast.LENGTH_SHORT).show();
                 } else {
-                    ItineraryModel itineraryModel = new ItineraryModel(departure, destination, driver, mDate, Integer.parseInt(price));
                     // TODO : save itineraryModel into Firebase
+                    FirebaseDatabase database = FirebaseDatabase.getInstance();
+                    ItineraryModel itineraryModel = new ItineraryModel(departure, destination, driver, mDate, Integer.parseInt(price));
+                    DatabaseReference itineraryRef = database.getReference("itinerary");
+                    itineraryRef.push().setValue(itineraryModel);
 
                 }
             }
